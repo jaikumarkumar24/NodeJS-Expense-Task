@@ -1,17 +1,16 @@
-import express from 'express'
-
-
+import express from 'express';
+import bodyparser from 'body-parser';
 import dotenv from 'dotenv';
 dotenv.config()
-
-
-
-import connectDB from './db/connect.js';
 // Connect to the database
+import connectDB from './db/connect.js';
 connectDB();
+import routes from './routes/index.js';
 
 const app = express()
+app.use(bodyparser.json());
+app.use('/api', routes);
+
 const port = process.env.PORT
 
-app.get('/', (req, res) => res.send('Hello World!'))
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
