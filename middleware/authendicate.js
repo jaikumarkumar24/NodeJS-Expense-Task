@@ -1,5 +1,4 @@
 'use strict';
-
 import jwt from 'jsonwebtoken';
 
 const authenticateToken = (req,res,next)=>{
@@ -15,14 +14,13 @@ const authenticateToken = (req,res,next)=>{
         token = parts[1];
     }
     try{
-            const decoded = jwt.verify(token, process.env.SECRET_KEY);
-            console.log('Decoded Token:', decoded);
-            req.user = decoded;
-            next();
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = decoded;
+        next();
     }
     catch(error){
             console.error('Token verification failed:', error.message);
-            return null;
+            res.status(400).send(error.message)
     }
 }
 
