@@ -5,6 +5,8 @@ import { findUserByEmail,createUser } from '../../db/services/user.services.js'
 import { ErrorHandler } from '../../middleware/errorHandler.js'
 import { StatusCodes } from 'http-status-codes';
 
+import { constants } from '../../constants/constants.js';
+
 
 const userRegister = async(req,res)=>{
 
@@ -12,7 +14,7 @@ const userRegister = async(req,res)=>{
     const uniqueValidation = await findUserByEmail(params);
     console.log(uniqueValidation);
     if(uniqueValidation.length){
-        return res.status(StatusCodes.CONFLICT).send({data:"User Already Exist"})
+        return res.status(StatusCodes.CONFLICT).send({data:constants.alreadyExist})
     }
     else{        
         const data = []
@@ -30,14 +32,14 @@ const loginUser = async(req,res)=>{
         if(checkUserExist[0] && checkUserExist[0].username && checkUserExist[0].email){
             if(req.body.password === checkUserExist[0].password){
                 const newToken =  generateAuthToken(checkUserExist[0])
-                return res.status(200).send({token:newToken})
+                return res.status(StatusCodes.OK).send({token:newToken})
             }
             else{
-                res.status(StatusCodes.NOT_FOUND).send({"error":'Password is Incorrect'});
+                res.status(StatusCodes.NOT_FOUND).send({error:constants.passwordFailed});
             }
         }        
         else{
-            res.status(StatusCodes.NOT_FOUND).send({"error":'Email is Incorrect'});
+            res.status(StatusCodes.NOT_FOUND).send({error:constants.emailFailed});
         }
     }
     catch(error){
@@ -51,7 +53,7 @@ const getUserData = async(req,res,next)=>{
         const response = await findUserByEmail(query);
 
         if (!response.length) {
-            return res.status(StatusCodes.NOT_FOUND).send({"error":'User not found'});
+            return res.status(StatusCodes.NOT_FOUND).send({error:constants.userNotFound});
         }
         let userValues = []
         response.forEach(({_id,username,email})=>{

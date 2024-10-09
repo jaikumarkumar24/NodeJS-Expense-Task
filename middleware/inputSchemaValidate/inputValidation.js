@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { StatusCodes } from 'http-status-codes';
 
 function ValidateReq(schema = Joi.object({}), reqType = "body"){
     return (req,res,next)=>{
@@ -6,7 +7,7 @@ function ValidateReq(schema = Joi.object({}), reqType = "body"){
             const validationresult = schema.validate(req[reqType], { abortEarly: false});
 
             if (validationresult.error) {
-                return res.status(400).send({message: validationresult.error.message || validationresult.error.details[0]})
+                return res.status(StatusCodes.BAD_REQUEST).send({message: validationresult.error.message || validationresult.error.details[0]})
             }else{
                 next();
                 return null;

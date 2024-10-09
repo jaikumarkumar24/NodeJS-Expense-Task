@@ -2,6 +2,7 @@
 import { addExpense,expensesByUserId,updateUserExpense,deleteUserExpenses} from '../../db/services/expenses.services.js';
 import { StatusCodes } from 'http-status-codes';
 import { ErrorHandler } from '../../middleware/errorHandler.js';
+import { constants } from '../../constants/constants.js';
 
 const createExpense  = async (req, res, next)=>{
     try{
@@ -28,9 +29,9 @@ const getExpensesByUserId = async (req, res, next) => {
     try{
         const expense = await updateUserExpense(req.params.id, req.body);
         if (!expense) {
-            return res.status(StatusCodes.NOT_FOUND).json({ status: 'error', message: 'Expense not found' });
+            return res.status(StatusCodes.NOT_FOUND).json({ status: constants.error, message: constants.expensesError });
           }
-          res.status(StatusCodes.OK).json({ status: 'success', data: expense });
+          res.status(StatusCodes.OK).json({ status: constants.statusSuccess, data: expense });
     }
     catch(error){
         next(new ErrorHandler(StatusCodes.INTERNAL_SERVER_ERROR, error.message))
@@ -40,9 +41,9 @@ const getExpensesByUserId = async (req, res, next) => {
     try{
         const expense = await deleteUserExpenses(req.params.id);
         if (!expense) {
-            return res.status(StatusCodes.NOT_FOUND).json({ status: 'error', message: 'Expense not found' });
+            return res.status(StatusCodes.NOT_FOUND).json({ status: constants.error, message: constants.expensesError });
           }
-          res.status(StatusCodes.OK).send({ status: 'success', data: expense });
+          res.status(StatusCodes.OK).send({ status: constants.statusSuccess, data: expense });
     }
     catch(error){
         next(new ErrorHandler(StatusCodes.INTERNAL_SERVER_ERROR, error.message))

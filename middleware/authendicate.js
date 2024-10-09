@@ -1,10 +1,12 @@
 'use strict';
 import jwt from 'jsonwebtoken';
+import { StatusCodes } from 'http-status-codes';
+import { constants } from '../constants/constants.js';
 
 const authenticateToken = (req,res,next)=>{
     if((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer '))){
-        return res.status(401).send({
-            error: 'Unauthorized'
+        return res.status(StatusCodes.UNAUTHORIZED).send({
+            error: constants.unAuthorized
           })
     }
 
@@ -19,8 +21,8 @@ const authenticateToken = (req,res,next)=>{
         next();
     }
     catch(error){
-            console.error('Token verification failed:', error.message);
-            res.status(400).send(error.message)
+            console.error(constants.tokenVerifyFailed, error.message);
+            res.status(StatusCodes.BAD_REQUEST).send(error.message)
     }
 }
 

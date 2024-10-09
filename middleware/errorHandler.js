@@ -1,5 +1,6 @@
 // errorHandler.js
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
+import { constants } from '../constants/constants.js';
 
 class ErrorHandler extends Error {
   constructor(statusCode, message) {
@@ -12,7 +13,7 @@ class ErrorHandler extends Error {
 const handleError = (err, req, res, next) => {
   const { statusCode, message } = err;
   res.status(statusCode).json({
-    status: "error",
+    status: constants.error,
     statusCode,
     message,
   });
