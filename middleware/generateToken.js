@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 export const generateAuthToken = (data)=>{
     try {
 
-        const { username,email} = data;
-        const payload = { username,email };
+        const { _id,username,email } = data;
+        const payload = { _id,username,email };
         // Generate a JWT with your secret key
         const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' });
         return token;

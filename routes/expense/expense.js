@@ -1,11 +1,14 @@
 'use strict';
+const router = Router();
+import authenticateToken from '../../middleware/authendicate.js'
 
 import { Router } from 'express';
-const router = Router();
 
-// router.get('/expenses',  getUserExpenses);
-// router.post('/expenses',addUserExpenses);
-// router.put('/expenses/:id',updateUserExpenses);
-// router.delete('expenses/:id',deleteUserExpenses)
+import { getExpensesByUserId,createExpense,updateExpenses,deleteExpenses } from './expenses.module.js';
+
+router.get('/',authenticateToken, getExpensesByUserId);
+router.post('/',authenticateToken, createExpense);
+router.put('/:id',authenticateToken, updateExpenses);
+router.delete('/:id', deleteExpenses)
 
 export default router;
