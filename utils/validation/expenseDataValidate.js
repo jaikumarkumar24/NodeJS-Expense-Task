@@ -1,7 +1,6 @@
 import Joi from "joi";
 import mongoose from 'mongoose';
-
-import { constants } from "../../constants/constants.js";
+import { CONSTANTS } from "../../config/constants.js";
 
 const expensesCreateSchema = Joi.object({
     title:Joi.string().min(3).max(30).required(),
@@ -12,13 +11,13 @@ const expensesCreateSchema = Joi.object({
 
 const objectIdValidation = (value, helpers) => {
     if (!mongoose.Types.ObjectId.isValid(value)) {
-      return helpers.message(constants.objectIdValidation);
+      return helpers.message(CONSTANTS.OBJECT_ID_ERROR);
     }
     return value;
   };
 
 const expenseParamSchema = Joi.object({
-    id: Joi.string().custom(objectIdValidation, 'ObjectId validation').required(),
+    id: Joi.string().custom(objectIdValidation, CONSTANTS.OBJECT_VALIDATION).required(),
 });
 
 const expensesUpdateSchema = Joi.object({
@@ -27,7 +26,7 @@ const expensesUpdateSchema = Joi.object({
     category:Joi.string().min(3).max(30).required(),    
 })
 
-export {
+export default {
     expensesCreateSchema,
     expensesUpdateSchema,
     expenseParamSchema

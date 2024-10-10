@@ -15,7 +15,7 @@ const getUserListSchema = Joi.object({
     email: Joi.string().email().required(),
 })
 
-export {
+export default {
     userRegisterSchema,
     userLoginSchema,
     getUserListSchema

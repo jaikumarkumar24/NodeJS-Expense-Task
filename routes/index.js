@@ -1,13 +1,10 @@
 'use strict';
-
 import { Router } from 'express';
+import userRoutes from './userRoutes.js';
+import expensesRoutes from './expenseRoutes.js';
 const router = Router();
 
-import userDetails from './user/user.js';
-import expenses from './expense/expense.js'
-
-router.use('/auth', userDetails);
-router.use('/expenses',expenses);
-
+router.use('/auth', userRoutes);
+router.use('/expenses',expensesRoutes);
 
 export default router;
